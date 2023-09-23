@@ -4,10 +4,10 @@ import Maincontainer from './Maincontainer'
 
 const Body = () => {
   return (
-    <>
+    <div className='flex'>
     <Sidebar/>
     <Maincontainer/>
-    </>
+    </div>
   )
 }
 
