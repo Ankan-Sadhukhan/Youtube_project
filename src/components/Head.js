@@ -1,15 +1,57 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { toggleMenu } from '../utils/appSlice';
+import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { cacheResults } from "../utils/searchSlice";
+
 
 const Head = () => {
 
-  const dispatch=useDispatch();
+  const [SearchQuery,setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  //console.log(SearchQuery);
+  
+  const searchCache = useSelector((store) => store.search);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchCache[SearchQuery]) {
+        setSuggestions(searchCache[SearchQuery]);
+      } else {
+        getSearchSugsestions();
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [SearchQuery]);
+
+  const getSearchSugsestions = async () => {
+    const data = await fetch(YOUTUBE_SEARCH_API + SearchQuery);
+    const json = await data.json();
+    //console.log(json[1]);
+    setSuggestions(json[1]);
+
+    // update cache
+    dispatch(
+      cacheResults({
+        [SearchQuery]: json[1],
+      })
+    );
+  };
+
+  
+
+  // const dispatch=useDispatch();
   const toggleMenuHandler=()=>{
     dispatch(toggleMenu());
   };
 
   return (
+
     <div className='shadow-lg mt-2 py-2 flex place-content-between'>
         <div className='flex w-20 p-2'>
             <img onClick={()=>toggleMenuHandler()} className='w-14 pl-2 pr-4 cursor-pointer' alt='icon' src='https://icons.veryicon.com/png/o/miscellaneous/linear-icon-45/hamburger-menu-5.png'/>
@@ -17,8 +59,26 @@ const Head = () => {
             
         </div>
         <div className=''>
-            <input className='border-2 p-1  pl-4 rounded-l-full' type="text" placeholder="Search"/>
+          <div>
+            <input className='border-2 p-1  pl-4 rounded-l-full' type="text" placeholder="Search"
+            value={SearchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setShowSuggestions(false)}
+            />
             <button className='border-2 p-1  rounded-r-full'>Search</button>
+        </div>
+        {showSuggestions && (
+          <div className="fixed bg-white py-2 px-2 w-[37rem] shadow-lg rounded-lg border border-gray-100">
+            <ul>
+              {suggestions.map((s) => (
+                <li key={s} className="py-2 px-3 shadow-sm hover:bg-gray-100">
+                  🔍 {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         </div>
         <div className='pr-8'>
             <img className='w-12 p-2' alt='user' src='https://cdn-icons-png.flaticon.com/512/666/666201.png'/>
@@ -27,4 +87,4 @@ const Head = () => {
   )
 }
 
-export default Head
+export default Head;
