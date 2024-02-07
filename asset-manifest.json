@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Ankan-Sadhukhan/Youtube_project/static/css/main.c4c5a0b4.css",
+    "main.js": "/Ankan-Sadhukhan/Youtube_project/static/js/main.9ead0e8e.js",
+    "static/js/787.f3f0f157.chunk.js": "/Ankan-Sadhukhan/Youtube_project/static/js/787.f3f0f157.chunk.js",
+    "index.html": "/Ankan-Sadhukhan/Youtube_project/index.html",
+    "main.c4c5a0b4.css.map": "/Ankan-Sadhukhan/Youtube_project/static/css/main.c4c5a0b4.css.map",
+    "main.9ead0e8e.js.map": "/Ankan-Sadhukhan/Youtube_project/static/js/main.9ead0e8e.js.map",
+    "787.f3f0f157.chunk.js.map": "/Ankan-Sadhukhan/Youtube_project/static/js/787.f3f0f157.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c4c5a0b4.css",
+    "static/js/main.9ead0e8e.js"
+  ]
+}
